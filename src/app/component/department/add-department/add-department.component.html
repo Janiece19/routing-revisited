@@ -1,0 +1,14 @@
+<h1>
+    {{title}}
+</h1>
+<label for="DeptName"> </label>
+<input type="text" name="DeptName" [(ngModel)]="department.name">
+<br>
+<br>
+<input type="button" *ngIf="department.id==0" value="Save Department" (click)="AddDepartment(department.name)">
+<br>
+<br>
+<input type="button" *ngIf="department.id > 0" value="update Department" (click)="updateDepartment(department.name)">
+<br>
+<br>
+<input type="button" value="Cancel">
