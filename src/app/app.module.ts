@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 //import { CrudComponent } from './component/crud/crud.component';
 import { DepartmentComponent } from './component/department/department.component';
 import { AddDepartmentComponent } from './component/department/add-department/add-department.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { EditDeptComponent } from './edit-dept/edit-dept.component';
 
 @NgModule({
   declarations: [
@@ -14,12 +16,14 @@ import { AddDepartmentComponent } from './component/department/add-department/ad
   //  CrudComponent,
     DepartmentComponent,
     AddDepartmentComponent,
+    EditDeptComponent,
     
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   providers: [FormService],
   bootstrap: [AppComponent]

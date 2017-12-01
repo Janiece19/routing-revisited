@@ -35,6 +35,10 @@ export class FormService {
       .catch(error => console.error(error));
 
   }
+  getDeptment(id:number){
+    return this.getDepartment().then(dept=>dept.find(i=>i.id==id));
+
+  }
 }
 
 

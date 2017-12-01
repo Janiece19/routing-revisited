@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter,OnChanges,SimpleChanges } from '@angular/core';
 import { Department } from '../../../shared/form-model';
 import { FormService } from '../../../shared/form-service';
+import { ActivatedRoute, Params, Router } from "@angular/router";
 
 @Component({
   selector: 'app-add-department',
@@ -8,7 +9,9 @@ import { FormService } from '../../../shared/form-service';
   styleUrls: ['./add-department.component.css']
 })
 export class AddDepartmentComponent implements OnInit{
-  @Input('dept') department: Department;
+  public departmentId;
+  departmentName:string;
+   department: Department=new Department();
   //@Input() title:string;
  ngOnChanges(changes:SimpleChanges):void{
 
@@ -21,39 +24,31 @@ set Title(name){
 get(){
    return this.title;
  }
-  @Output() deptOutputEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
-  constructor(private _formService: FormService) { }
+ 
+  constructor(private _formService: FormService,private route:ActivatedRoute,private router:Router) { }
 
-  AddDepartment(deptName: string) {
-    let empObj = new Department;
-    empObj.id = this.department.id;
-    empObj.name = this.department.name;
-    this._formService.saveDepartment(empObj).then(
+  AddDepartment() {
+    // let empObj = new Department;
+    //  empObj.id = this.department.id;
+    // empObj.name = this.department.name;
+    this._formService.saveDepartment(this.department).then(
       (data) => {
-       this.deptOutputEvent.emit(true);
-        this.clearForm()
+         this.router.navigate(['/home']);
+       
       },
       (error) => console.error(error)
     );
   }
-  updateDepartment(deptName) {
-    let empObj = new Department;
-    empObj.id = this.department.id;  
-    empObj.name = this.department.name;
-    this._formService.updateDepartment(empObj).then(
-      (data) => {
-        this.deptOutputEvent.emit(true);
-        this.clearForm();
-      },
-      (error) => console.error(error)
-    );
-  }
+ 
   ngOnInit() {
-    console.log(this.department);
+    console.log();
+    // this.route.params.subscribe((param:Params)=>{
+    //   let id=parseInt(param['id']);
+    //   this.departmentId=id;
+
+    // })
   }
-  clearForm() {
-   this.department = new Department();
-   //this.department.id=undefined;
-   //this.department.name=undefined;
+  cancelForm() {
+  this.router.navigate(['/home']);
   }
 }

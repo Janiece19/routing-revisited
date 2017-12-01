@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Department } from '../../shared/form-model'
 import { FormService } from '../../shared/form-service';
+import { Router } from "@angular/router";
+import { AddDepartmentComponent } from "./add-department/add-department.component";
 @Component({
   selector: 'app-department',
   templateUrl: './department.component.html',
@@ -12,13 +14,13 @@ export class DepartmentComponent implements OnInit {
    this.loadDepartments();
   }
   department: Department = new Department();
-  showAddPanel = false;
+  // showAddPanel = false;
   departments: Department[];
   add='';
-  constructor(private _formService: FormService) { }
-  AddForm() {
-    this.showAddPanel = !this.showAddPanel;
-  }
+  constructor(private _formService: FormService,private router:Router) { }
+  // AddForm() {
+  //   this.showAddPanel = !this.showAddPanel;
+  // }
   ngAfterViewInit(){
     console.log('hii view');
   }
@@ -32,14 +34,16 @@ export class DepartmentComponent implements OnInit {
     );
   }
   editRow(departments: Department) {
-    this.AddForm();
-    this.department.name = departments.name;
-    this.department.id = departments.id;
+    this.router.navigate(['/edit', departments.id]);
+    //  this.AddForm();
+    // this.department.name = departments.name;
+    // this.department.id = departments.id;
   }
   showAddForm() {
-    this.AddForm();
+    //  this.AddForm();
     this.department = new Department();
     this.department.id = 0;
+     this.router.navigate(['/add'])
   }
   private loadDepartments() {
     this._formService.getDepartment().then(
@@ -49,7 +53,7 @@ export class DepartmentComponent implements OnInit {
   }
   formClose(event) {
     if (event) {
-      this.AddForm();
+      // this.AddForm();
       this.loadDepartments();
     }
   }
