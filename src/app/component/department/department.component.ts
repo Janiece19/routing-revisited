@@ -51,12 +51,9 @@ export class DepartmentComponent implements OnInit {
       (error) => console.error(error)
     );
   }
-  formClose(event) {
-    if (event) {
-      // this.AddForm();
-      this.loadDepartments();
-    }
-  }
+viewDetail(department){
+  this.router.navigate(['/view-detail',{id:department.id,name:department.name}])
+}
 }
 
 

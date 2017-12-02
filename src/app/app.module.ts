@@ -9,6 +9,7 @@ import { DepartmentComponent } from './component/department/department.component
 import { AddDepartmentComponent } from './component/department/add-department/add-department.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { EditDeptComponent } from './edit-dept/edit-dept.component';
+import { DepartmentDetailComponent } from './department-detail/department-detail.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { EditDeptComponent } from './edit-dept/edit-dept.component';
     DepartmentComponent,
     AddDepartmentComponent,
     EditDeptComponent,
+    DepartmentDetailComponent,
     
   ],
   imports: [
