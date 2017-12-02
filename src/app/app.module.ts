@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FormService } from './shared/form-service';
 import { AppComponent } from './app.component';
-//import { CrudComponent } from './component/crud/crud.component';
 import { DepartmentComponent } from './component/department/department.component';
 import { AddDepartmentComponent } from './component/department/add-department/add-department.component';
 import { AppRoutingModule } from './/app-routing.module';
@@ -14,7 +13,6 @@ import { DepartmentDetailComponent } from './department-detail/department-detail
 @NgModule({
   declarations: [
     AppComponent,
-  //  CrudComponent,
     DepartmentComponent,
     AddDepartmentComponent,
     EditDeptComponent,

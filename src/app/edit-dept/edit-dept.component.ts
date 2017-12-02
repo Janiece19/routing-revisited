@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { ActivatedRoute, Params, Router, ParamMap } from "@angular/router";
 import { FormService } from "../shared/form-service";
 import 'rxjs/add/operator/switchMap';
 import { Department } from "../shared/form-model";
@@ -17,13 +17,13 @@ export class EditDeptComponent implements OnInit {
   constructor(private route:ActivatedRoute,private formService:FormService,private router:Router) { }
 
   ngOnInit() {
-    this.route.params.switchMap((params:Params)=>
+    this.route.paramMap.switchMap((param:ParamMap)=>
       this.formService.getDeptment(+params['id'])).subscribe(data=>this.department=data);
     
   }
   updateDepartment() {
     // empObj.name = this.department.name;
-    this.formService.updateDepartment(this.department).then(
+    this.formService.updateDepartment(this.department).subscribe(
       (data) => {
          this.router.navigate(['/home']);
        

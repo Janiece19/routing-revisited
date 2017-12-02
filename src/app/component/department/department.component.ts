@@ -52,7 +52,7 @@ export class DepartmentComponent implements OnInit {
     );
   }
 viewDetail(department){
-  this.router.navigate(['/view-detail',{id:department.id,name:department.name}])
+  this.router.navigate(['/view-detail',{id:department.id,name:department.name,description:department.name+'division'}])
 }
 }
 

@@ -6,7 +6,7 @@ import { DepartmentComponent } from "./component/department/department.component
 import { EditDeptComponent } from "./edit-dept/edit-dept.component";
 import { DepartmentDetailComponent } from './department-detail/department-detail.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: DepartmentComponent },
   { path: 'add', component: AddDepartmentComponent },

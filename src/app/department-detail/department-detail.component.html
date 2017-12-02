@@ -1,11 +1,21 @@
-<p>
-  department-detail works!
-</p>
+
 <h1>
  {{department.name}}
 </h1>
-
+<br>
+<br>
 <div>
   <label>Id:</label>
 {{department.id}}
 </div>
+<div>
+<label>Department Name</label>
+<input type="text" [(ngModel)]="department.name">
+</div>
+
+
+<!--<div>
+<label><i>Department Description</i></label>
+{{selectedDescrption}}
+</div>-->
+<button (click)="goBack()">Back</button>

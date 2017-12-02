@@ -25,7 +25,7 @@ get(){
    return this.title;
  }
  
-  constructor(private _formService: FormService,private route:ActivatedRoute,private router:Router) { }
+  constructor(private _formService: FormService,private router:Router) { }
 
   AddDepartment() {
     // let empObj = new Department;
@@ -42,11 +42,7 @@ get(){
  
   ngOnInit() {
     console.log();
-    // this.route.params.subscribe((param:Params)=>{
-    //   let id=parseInt(param['id']);
-    //   this.departmentId=id;
-
-    // })
+    
   }
   cancelForm() {
   this.router.navigate(['/home']);
