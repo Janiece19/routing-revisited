@@ -30,7 +30,7 @@ export class FormService {
 
   }
   getDeptment(id:number){
-    return this.getDepartment().subscribe(dept=>dept.find(i=>i.id==id));
+    return this.getDepartment().toPromise().then(dept=>dept.find(i=>i.id==id));
 
   }
 }

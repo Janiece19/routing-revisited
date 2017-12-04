@@ -28,10 +28,10 @@ get(){
   constructor(private _formService: FormService,private router:Router) { }
 
   AddDepartment() {
-    // let empObj = new Department;
-    //  empObj.id = this.department.id;
-    // empObj.name = this.department.name;
-    this._formService.saveDepartment(this.department).subscribe(
+    let empObj = new Department;
+     empObj.id = this.department.id;
+    empObj.name = this.department.name;
+    this._formService.saveDepartment(empObj).subscribe(
       (data) => {
          this.router.navigate(['/home']);
        

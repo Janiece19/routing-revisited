@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+// import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { AddDepartmentComponent } from "./component/department/add-department/add-department.component";
 import { DepartmentComponent } from "./component/department/department.component";
@@ -17,7 +17,7 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [
-    CommonModule,
+   
     RouterModule.forRoot(routes,
       { enableTracing: true })
   ],

@@ -14,38 +14,31 @@ export class DepartmentComponent implements OnInit {
    this.loadDepartments();
   }
   department: Department = new Department();
-  // showAddPanel = false;
+
   departments: Department[];
   add='';
   constructor(private _formService: FormService,private router:Router) { }
-  // AddForm() {
-  //   this.showAddPanel = !this.showAddPanel;
-  // }
-  ngAfterViewInit(){
-    console.log('hii view');
-  }
+  
+ 
 
   deleteRow(id: number) {
     this._formService.deleteDepartment(id).subscribe(
       (data) => {
-       // alert('Department Delete SuccessFully');
+      
         this.loadDepartments();
       }, (error => console.error(error))
     );
   }
   editRow(departments: Department) {
     this.router.navigate(['/edit', departments.id,departments.name]);
-    //  this.AddForm();
-    // this.department.name = departments.name;
-    // this.department.id = departments.id;
+   
   }
   showAddForm() {
-    //  this.AddForm();
-    this.department = new Department();
-    this.department.id = 0;
      this.router.navigate(['/add'])
   }
-  private loadDepartments() {
+    
+   
+    loadDepartments() {
     this._formService.getDepartment().subscribe(
       (data) => this.departments = data,
       (error) => console.error(error)

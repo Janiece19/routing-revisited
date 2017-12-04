@@ -20,18 +20,15 @@ export class EditDeptComponent implements OnInit {
   constructor(private route:ActivatedRoute,private formService:FormService,private router:Router) { }
 
   ngOnInit() {
-    // this.route.params
-    // .switchMap((params: Params) => this.formService.getDeptment(+params['id']))
-    // .subscribe(data => this.department = data);
-
-    
-       
-     
-this.department.id=+this.route.snapshot.params['id'];
-this.department.name=this.route.snapshot.params['name'];
+   
+    this.route.params.switchMap((param:Params)=>
+      this.formService.getDeptment(+param['id'])).subscribe(data=>this.department=data);
+// this.department.id=+this.route.snapshot.params['id'];
+// this.department.name=this.route.snapshot.params['name'];
           }  
-  
-  updateDepartment() {
+
+
+updateDepartment() {
     // empObj.name = this.department.name;
     this.formService.updateDepartment(this.department).subscribe(
       (data) => {

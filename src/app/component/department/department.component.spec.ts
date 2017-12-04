@@ -10,31 +10,43 @@ import { AddDepartmentComponent } from "./add-department/add-department.componen
 import { EditDeptComponent } from "../../edit-dept/edit-dept.component";
 import { DepartmentDetailComponent } from "../../department-detail/department-detail.component";
 import { FormsModule } from "@angular/forms";
+import { Observable } from "rxjs/Observable";
+import { MockHelper } from "../../stub";
+
+// class empServiceMock {
+//   getDepartment<T>() {
+//     return Observable.of([{ id: 1, name: 'Hr' }, { id: 2, name: 'Sales' }, { id: 3, name: 'Marketing' }])
+//   }
+// }
+
 
 fdescribe('DepartmentComponent', () => {
   let component: DepartmentComponent;
   let fixture: ComponentFixture<DepartmentComponent>;
   let router: Router;
-  let formService:FormService;
-//   let mockRouter = {
-// 	navigate: jasmine.createSpy('navigate')
-// }
+  let formService: FormService;
+  let mockHelper:MockHelper;
+  //   let mockRouter = {
+  // 	navigate: jasmine.createSpy('navigate')
+  // }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DepartmentComponent,AddDepartmentComponent,
-    EditDeptComponent,
-    DepartmentDetailComponent,
- ],
-      	providers: [
-		// { provide: Router, useValue: mockRouter},
-		
-    FormService
-	], imports: [RouterTestingModule.withRoutes([]),FormsModule,HttpClientModule], 
+      declarations: [DepartmentComponent, AddDepartmentComponent,
+        EditDeptComponent,
+        DepartmentDetailComponent,
+      ],
+      providers: [
+        // { provide: Router, useValue: mockRouter},
+        { provide: FormService, useClass: MockHelper },
+
+
+      ], imports: [RouterTestingModule.withRoutes([]), FormsModule, HttpClientModule],
     })
-    .compileComponents();
-     router = TestBed.get(Router); 
-     formService=TestBed.get(FormService);
+      .compileComponents();
+    router = TestBed.get(Router);
+    formService = TestBed.get(FormService);
+    mockHelper=new MockHelper();
   }));
 
   beforeEach(() => {
@@ -43,36 +55,65 @@ fdescribe('DepartmentComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should call data from the server', () => {
+    spyOn(formService, 'getDepartment').and.returnValue((mockHelper.getDepartment()))
+    fixture.whenStable().then(() => {
+      (component).loadDepartments();
+
+      fixture.detectChanges();
+      expect(formService.getDepartment).toHaveBeenCalledTimes(1);
+    })
+
+  })
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-// xit('should call Router.navigateByUrl("forms/:id") with the ID of the form', () => {
-           
-//              component.showAddForm();
-//              expect (mockRouter.navigate).toHaveBeenCalledWith (['/add']);
 
-            
-            
-//         });
+  it('should call loadDepartments on calling ', () => {
+    spyOn(component,'loadDepartments');
+   component.ngOnInit();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(component.loadDepartments).toHaveBeenCalledTimes(1);
+
+      
+    })
+  })
 
 
-        fit('should navigate to addComponent', () => {
-          let navigateSpy = spyOn((<any>component).router, 'navigate');
-          component.showAddForm();
-          expect(navigateSpy).toHaveBeenCalledWith(['/add']);
-      });
-      fit('should navigate to editComponent', () => {
-          let navigateSpy = spyOn((<any>component).router, 'navigate');
-          let obj={id:1,name:'finance'}
-          component.editRow(obj) ;
-          expect(navigateSpy).toHaveBeenCalledWith( ['/edit', 1, 'finance' ] );
-      });
-      fit('should navigate to departmentDetailComponent', () => {
-        let navigateSpy = spyOn((<any>component).router, 'navigate');
-        let obj={id:1,name:'finance'}
-        component.viewDetail(obj) ;
-        expect(navigateSpy).toHaveBeenCalledWith( ['/view-detail', {id:1, name:'finance',description:'finance'+'division' }]);
-      });
+
+  it('should navigate to addComponent', () => {
+    let navigateSpy = spyOn((<any>component).router, 'navigate');
+    component.showAddForm();
+    expect(navigateSpy).toHaveBeenCalledWith(['/add']);
+  });
+  it('should navigate to editComponent', () => {
+    let navigateSpy = spyOn((<any>component).router, 'navigate');
+    let obj = { id: 1, name: 'finance' }
+    component.editRow(obj);
+    expect(navigateSpy).toHaveBeenCalledWith(['/edit', 1, 'finance']);
+  });
+  it('should navigate to departmentDetailComponent', () => {
+    let navigateSpy = spyOn((<any>component).router, 'navigate');
+    let obj = { id: 1, name: 'finance' }
+    component.viewDetail(obj);
+    expect(navigateSpy).toHaveBeenCalledWith(['/view-detail', { id: 1, name: 'finance', description: 'finance' + 'division' }]);
+  });
+
+
+
+  // xit('should call Router.navigateByUrl("forms/:id") with the ID of the form', () => {
+
+  //              component.showAddForm();
+  //              expect (mockRouter.navigate).toHaveBeenCalledWith (['/add']);
+
+
+
+  //         });
+
+
+
 
 });
