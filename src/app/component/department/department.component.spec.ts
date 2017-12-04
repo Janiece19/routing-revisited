@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DepartmentComponent } from './department.component';
 import { Router } from "@angular/router";
 import { FormService } from "../../shared/form-service";
-import { Http } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { routes } from "../../app-routing.module";
 import { RouterTestingModule } from "@angular/router/testing";
 import { AddDepartmentComponent } from "./add-department/add-department.component";
@@ -16,9 +16,9 @@ fdescribe('DepartmentComponent', () => {
   let fixture: ComponentFixture<DepartmentComponent>;
   let router: Router;
   let formService:FormService;
-  let mockRouter = {
-	navigate: jasmine.createSpy('navigate')
-}
+//   let mockRouter = {
+// 	navigate: jasmine.createSpy('navigate')
+// }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -27,10 +27,10 @@ fdescribe('DepartmentComponent', () => {
     DepartmentDetailComponent,
  ],
       	providers: [
-		{ provide: Router, useValue: mockRouter},
+		// { provide: Router, useValue: mockRouter},
 		
-    FormService,Http
-	], imports: [RouterTestingModule.withRoutes(routes),FormsModule], 
+    FormService
+	], imports: [RouterTestingModule.withRoutes([]),FormsModule,HttpClientModule], 
     })
     .compileComponents();
      router = TestBed.get(Router); 
@@ -47,15 +47,32 @@ fdescribe('DepartmentComponent', () => {
     expect(component).toBeTruthy();
   });
 
-fit('should call Router.navigateByUrl("forms/:id") with the ID of the form', () => {
-            const spy = spyOn(router, 'navigate');
+// xit('should call Router.navigateByUrl("forms/:id") with the ID of the form', () => {
+           
+//              component.showAddForm();
+//              expect (mockRouter.navigate).toHaveBeenCalledWith (['/add']);
 
-            component.showAddForm();
+            
+            
+//         });
 
-            const url = spy.calls.first().args[0];
 
-            expect(url).toBe('/add');
-        });
-
+        fit('should navigate to addComponent', () => {
+          let navigateSpy = spyOn((<any>component).router, 'navigate');
+          component.showAddForm();
+          expect(navigateSpy).toHaveBeenCalledWith(['/add']);
+      });
+      fit('should navigate to editComponent', () => {
+          let navigateSpy = spyOn((<any>component).router, 'navigate');
+          let obj={id:1,name:'finance'}
+          component.editRow(obj) ;
+          expect(navigateSpy).toHaveBeenCalledWith( ['/edit', 1, 'finance' ] );
+      });
+      fit('should navigate to departmentDetailComponent', () => {
+        let navigateSpy = spyOn((<any>component).router, 'navigate');
+        let obj={id:1,name:'finance'}
+        component.viewDetail(obj) ;
+        expect(navigateSpy).toHaveBeenCalledWith( ['/view-detail', {id:1, name:'finance',description:'finance'+'division' }]);
+      });
 
 });

@@ -31,7 +31,7 @@ get(){
     // let empObj = new Department;
     //  empObj.id = this.department.id;
     // empObj.name = this.department.name;
-    this._formService.saveDepartment(this.department).then(
+    this._formService.saveDepartment(this.department).subscribe(
       (data) => {
          this.router.navigate(['/home']);
        

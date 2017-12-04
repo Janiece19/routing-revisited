@@ -10,7 +10,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: DepartmentComponent },
   { path: 'add', component: AddDepartmentComponent },
-  { path: 'edit/:id', component: EditDeptComponent },
+  { path: 'edit/:id/:name', component: EditDeptComponent },
   { path: 'view-detail', component: DepartmentDetailComponent },
   // { path: '**', component: PageNotFoundComponent }
 ]

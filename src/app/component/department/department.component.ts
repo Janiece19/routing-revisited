@@ -26,7 +26,7 @@ export class DepartmentComponent implements OnInit {
   }
 
   deleteRow(id: number) {
-    this._formService.deleteDepartment(id).then(
+    this._formService.deleteDepartment(id).subscribe(
       (data) => {
        // alert('Department Delete SuccessFully');
         this.loadDepartments();
@@ -34,7 +34,7 @@ export class DepartmentComponent implements OnInit {
     );
   }
   editRow(departments: Department) {
-    this.router.navigate(['/edit', departments.id]);
+    this.router.navigate(['/edit', departments.id,departments.name]);
     //  this.AddForm();
     // this.department.name = departments.name;
     // this.department.id = departments.id;
@@ -46,7 +46,7 @@ export class DepartmentComponent implements OnInit {
      this.router.navigate(['/add'])
   }
   private loadDepartments() {
-    this._formService.getDepartment().then(
+    this._formService.getDepartment().subscribe(
       (data) => this.departments = data,
       (error) => console.error(error)
     );

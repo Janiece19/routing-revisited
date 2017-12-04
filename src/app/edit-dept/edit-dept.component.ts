@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router, ParamMap } from "@angular/router";
 import { FormService } from "../shared/form-service";
 import 'rxjs/add/operator/switchMap';
 import { Department } from "../shared/form-model";
+import { ArrayHelper } from '../array-helper';
 
 @Component({
   selector: 'app-edit-dept',
@@ -10,17 +11,26 @@ import { Department } from "../shared/form-model";
   styleUrls: ['./edit-dept.component.css']
 })
 export class EditDeptComponent implements OnInit {
+  helper=new ArrayHelper();
   department=new Department();
   departmentName:string;
+  id:number;
 
 
   constructor(private route:ActivatedRoute,private formService:FormService,private router:Router) { }
 
   ngOnInit() {
-    this.route.paramMap.switchMap((param:ParamMap)=>
-      this.formService.getDeptment(+params['id'])).subscribe(data=>this.department=data);
+    // this.route.params
+    // .switchMap((params: Params) => this.formService.getDeptment(+params['id']))
+    // .subscribe(data => this.department = data);
+
     
-  }
+       
+     
+this.department.id=+this.route.snapshot.params['id'];
+this.department.name=this.route.snapshot.params['name'];
+          }  
+  
   updateDepartment() {
     // empObj.name = this.department.name;
     this.formService.updateDepartment(this.department).subscribe(
