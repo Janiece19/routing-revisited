@@ -17,18 +17,19 @@ describe('AddDepartmentComponent', () => {
   let fixture: ComponentFixture<AddDepartmentComponent>;
   let router: Router;
   let formService: FormService;
-  let mockHelper:MockHelper;
+  let mockHelper: MockHelper;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AddDepartmentComponent],
-      providers: [FormService],
+      providers: [
+      {provide:FormService,useClass:MockHelper}],
       imports: [RouterTestingModule.withRoutes([]), FormsModule, HttpClientModule]
     })
       .compileComponents();
     router = TestBed.get(Router);
     formService = TestBed.get(FormService);
-    mockHelper=new MockHelper();
+    mockHelper = new MockHelper();
   }));
 
   beforeEach(() => {
@@ -41,7 +42,7 @@ describe('AddDepartmentComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should navigate to home on clicking save()', () => {
-    spyOn(<any>formService, 'saveDepartment').and.returnValue(Observable.of ([{ id: 1, name: 'Finance' }] ));
+    spyOn(<any>formService, 'saveDepartment').and.returnValue(Observable.of([{ id: 1, name: 'Finance' }]));
     let navigateSpy = spyOn((<any>component).router, 'navigate');
 
     // component.department.id = 1;
@@ -51,10 +52,9 @@ describe('AddDepartmentComponent', () => {
     fixture.whenStable().then(() => {
       expect(<any>formService.saveDepartment).toHaveBeenCalledTimes(1);
       //  expect(<any>formService.saveDepartment).toHaveBeenCalledWith(({ id: 1, name: 'Finance' }));
-      // let result=mockHelper.getDepartment();
-      // expect(result).toContain({ id: 1, name: 'Finance' });
       expect(navigateSpy).toHaveBeenCalledWith(['/home']);
-    
+
+
 
     });
   })
@@ -63,23 +63,25 @@ describe('AddDepartmentComponent', () => {
     // spyOn(<any>formService, 'saveDepartment').and.returnValue(Observable.of([{ id: 1, name: 'Finance' }]));
     let navigateSpy = spyOn((<any>component).router, 'navigate');
 
-   
+   component.department.id=4;
     component.department.name = 'Finance';
     fixture.detectChanges();
-    //     dname.nativeElement.value = 'Tabinda';
-    // let dname = fixture.debugElement.query(By.css('input[name="DeptName"]'));
-
-    //     dname.nativeElement.dispatchEvent(new Event('input'));
-
+   
     component.AddDepartment();
     fixture.whenStable().then(() => {
-   let result=mockHelper.getDepartment();
-       expect(result).toContain({ id: 1, name: 'Finance' });
+     
+      
       // expect(<any>formService.saveDepartment).toHaveBeenCalledWith({ id: 1, name: 'Finance' });
 
       expect(navigateSpy).toHaveBeenCalledWith(['/home']);
     });
   })
+
+
+  fit('should navigate to home on clicking cancel',()=>{
+    let spy=spyOn((<any>component).router, 'navigate')
+    component.cancelForm();
+    expect(spy).toHaveBeenCalledWith(['/home']);
+  })
 });
 
-  
