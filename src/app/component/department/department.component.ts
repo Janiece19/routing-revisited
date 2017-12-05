@@ -11,42 +11,42 @@ import { AddDepartmentComponent } from "./add-department/add-department.componen
 })
 export class DepartmentComponent implements OnInit {
   ngOnInit(): void {
-   this.loadDepartments();
+    this.loadDepartments();
   }
   department: Department = new Department();
 
   departments: Department[];
-  add='';
-  constructor(private _formService: FormService,private router:Router) { }
-  
- 
+  add = '';
+  constructor(private _formService: FormService, private router: Router) { }
+
+
 
   deleteRow(id: number) {
     this._formService.deleteDepartment(id).subscribe(
       (data) => {
-      
+
         this.loadDepartments();
       }, (error => console.error(error))
     );
   }
   editRow(departments: Department) {
-    this.router.navigate(['/edit', departments.id,departments.name]);
-   
+    this.router.navigate(['/edit', departments.id]);
+
   }
   showAddForm() {
-     this.router.navigate(['/add'])
+    this.router.navigate(['/add'])
   }
-    
-   
-    loadDepartments() {
+
+
+  loadDepartments() {
     this._formService.getDepartment().subscribe(
       (data) => this.departments = data,
       (error) => console.error(error)
     );
   }
-viewDetail(department){
-  this.router.navigate(['/view-detail',{id:department.id,name:department.name,description:department.name+'division'}])
-}
+  viewDetail(department) {
+    this.router.navigate(['/view-detail', { id: department.id, name: department.name, description: department.name + 'division' }])
+  }
 }
 
 

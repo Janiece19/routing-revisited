@@ -18,12 +18,16 @@ describe('AddDepartmentComponent', () => {
   let router: Router;
   let formService: FormService;
   let mockHelper: MockHelper;
+   let mockRouter = {
+  	navigate: jasmine.createSpy('navigate')
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AddDepartmentComponent],
       providers: [
-      {provide:FormService,useClass:MockHelper}],
+      {provide:FormService,useClass:MockHelper},
+      { provide: Router, useValue: mockRouter},],
       imports: [RouterTestingModule.withRoutes([]), FormsModule, HttpClientModule]
     })
       .compileComponents();
@@ -41,18 +45,16 @@ describe('AddDepartmentComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should navigate to home on clicking save()', () => {
+  fit('should navigate to home on clicking save()', () => {
     spyOn(<any>formService, 'saveDepartment').and.returnValue(Observable.of([{ id: 1, name: 'Finance' }]));
-    let navigateSpy = spyOn((<any>component).router, 'navigate');
-
-    // component.department.id = 1;
-    // component.department.name = 'Finance';
+   
+   
     fixture.detectChanges();
     component.AddDepartment();
     fixture.whenStable().then(() => {
       expect(<any>formService.saveDepartment).toHaveBeenCalledTimes(1);
       //  expect(<any>formService.saveDepartment).toHaveBeenCalledWith(({ id: 1, name: 'Finance' }));
-      expect(navigateSpy).toHaveBeenCalledWith(['/home']);
+      expect(router.navigate).toHaveBeenCalledWith(['/home']);
 
 
 
@@ -60,8 +62,7 @@ describe('AddDepartmentComponent', () => {
   })
 
   fit('should add a new record on clicking save()', () => {
-    // spyOn(<any>formService, 'saveDepartment').and.returnValue(Observable.of([{ id: 1, name: 'Finance' }]));
-    let navigateSpy = spyOn((<any>component).router, 'navigate');
+    
 
    component.department.id=4;
     component.department.name = 'Finance';
@@ -71,17 +72,17 @@ describe('AddDepartmentComponent', () => {
     fixture.whenStable().then(() => {
      
       
-      // expect(<any>formService.saveDepartment).toHaveBeenCalledWith({ id: 1, name: 'Finance' });
+      
 
-      expect(navigateSpy).toHaveBeenCalledWith(['/home']);
+      expect(router.navigate).toHaveBeenCalledWith(['/home']);
     });
   })
 
 
-  fit('should navigate to home on clicking cancel',()=>{
-    let spy=spyOn((<any>component).router, 'navigate')
+  it('should navigate to home on clicking cancel',()=>{
+    // let spy=spyOn((<any>component).router, 'navigate')
     component.cancelForm();
-    expect(spy).toHaveBeenCalledWith(['/home']);
+    expect(router.navigate).toHaveBeenCalledWith(['/home']);
   })
 });
 

@@ -12,6 +12,7 @@ import { DepartmentDetailComponent } from "../../department-detail/department-de
 import { FormsModule } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { MockHelper } from "../../stub";
+import { By } from "@angular/platform-browser/";
 
 // class empServiceMock {
 //   getDepartment<T>() {
@@ -25,10 +26,10 @@ fdescribe('DepartmentComponent', () => {
   let fixture: ComponentFixture<DepartmentComponent>;
   let router: Router;
   let formService: FormService;
-  let mockHelper:MockHelper;
-  //   let mockRouter = {
-  // 	navigate: jasmine.createSpy('navigate')
-  // }
+  let mockHelper: MockHelper;
+    let mockRouter = {
+  	navigate: jasmine.createSpy('navigate')
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -37,16 +38,16 @@ fdescribe('DepartmentComponent', () => {
         DepartmentDetailComponent,
       ],
       providers: [
-        // { provide: Router, useValue: mockRouter},
+        { provide: Router, useValue: mockRouter},
         { provide: FormService, useClass: MockHelper },
 
 
-      ], imports: [RouterTestingModule.withRoutes([]), FormsModule, HttpClientModule],
+      ], imports: [ FormsModule, HttpClientModule],
     })
       .compileComponents();
     router = TestBed.get(Router);
     formService = TestBed.get(FormService);
-    mockHelper=new MockHelper();
+    mockHelper = new MockHelper();
   }));
 
   beforeEach(() => {
@@ -55,8 +56,8 @@ fdescribe('DepartmentComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should call data from the server', () => {
-    spyOn(formService, 'getDepartment').and.returnValue((mockHelper.getDepartment()))
+  fit('should call data from the server', () => {
+    spyOn(formService, 'getDepartment').and.returnValue(Observable.of(mockHelper.getDepartment()))
     fixture.whenStable().then(() => {
       (component).loadDepartments();
 
@@ -70,49 +71,89 @@ fdescribe('DepartmentComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  
+  //   fit('should not display table before calling ngOninit()',()=>{
+  //   let table=fixture.debugElement.queryAll(By.css('tr'))
+  //   expect(table.length).toBe(0);
+  // })
+
+  it('should display table on calling ngOninit()',()=>{
+    component.ngOnInit();
+    fixture.whenStable().then(()=>{
+      fixture.detectChanges();
+    let table=fixture.debugElement.queryAll(By.css('tr'))
+    expect(table.length).toBe(4);
+    })
+  })
+
+  fit('should call daleteDepartment with repective id',()=>{
+    spyOn(formService,'deleteDepartment').and.returnValue(Observable.of(mockHelper.deleteDepartment(3)));
+    spyOn(component,'loadDepartments');
+    component.deleteRow(3);
+    
+      
+    expect(formService.deleteDepartment).toHaveBeenCalledTimes(1);
+    expect(formService.deleteDepartment).toHaveBeenCalledWith(3);
+    expect(component.loadDepartments).toHaveBeenCalledTimes(1);
+
+    
+    
+  
+  })
+  
+  fit('should have mockdata when daleteDepartment with repective id is called',()=>{
+   
+    component.deleteRow(3);
+  expect(component.departments.length).toBe(3);
+
+  
+     
+      
+ })
+
+
+
 
   it('should call loadDepartments on calling ', () => {
-    spyOn(component,'loadDepartments');
-   component.ngOnInit();
+    spyOn(component, 'loadDepartments');
+    component.ngOnInit();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(component.loadDepartments).toHaveBeenCalledTimes(1);
 
-      
+
     })
   })
 
+it('should render title in a h1 tag', async(() => {
+    
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain('Department');
+  }));
 
 
   it('should navigate to addComponent', () => {
-    let navigateSpy = spyOn((<any>component).router, 'navigate');
+    // let navigateSpy = spyOn((<any>component).router, 'navigate');
     component.showAddForm();
-    expect(navigateSpy).toHaveBeenCalledWith(['/add']);
+    expect(router.navigate).toHaveBeenCalledWith(['/add']);
   });
   it('should navigate to editComponent', () => {
-    let navigateSpy = spyOn((<any>component).router, 'navigate');
+    // let navigateSpy = spyOn((<any>component).router, 'navigate');
     let obj = { id: 1, name: 'finance' }
     component.editRow(obj);
-    expect(navigateSpy).toHaveBeenCalledWith(['/edit', 1, 'finance']);
+    expect(router.navigate).toHaveBeenCalledWith(['/edit', 1]);
   });
   it('should navigate to departmentDetailComponent', () => {
-    let navigateSpy = spyOn((<any>component).router, 'navigate');
+    // let navigateSpy = spyOn((<any>component).router, 'navigate');
     let obj = { id: 1, name: 'finance' }
     component.viewDetail(obj);
-    expect(navigateSpy).toHaveBeenCalledWith(['/view-detail', { id: 1, name: 'finance', description: 'finance' + 'division' }]);
+    expect(router.navigate).toHaveBeenCalledWith(['/view-detail', { id: 1, name: 'finance', description: 'finance' + 'division' }]);
   });
 
 
 
-  // xit('should call Router.navigateByUrl("forms/:id") with the ID of the form', () => {
-
-  //              component.showAddForm();
-  //              expect (mockRouter.navigate).toHaveBeenCalledWith (['/add']);
-
-
-
-  //         });
-
+  
 
 
 

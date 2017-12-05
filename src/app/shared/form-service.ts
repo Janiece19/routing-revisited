@@ -11,20 +11,20 @@ export class FormService {
 
   constructor(private _http: HttpClient) {
   }
-  getDepartment() {
+  getDepartment():Observable<Department[]> {
     return this._http.get<Department[]>(this._baseUrl + "emp/departments")
       
   }
-  saveDepartment(departments: Department) {
+  saveDepartment(departments: Department):Observable<Department> {
     return this._http.post<Department>(this._baseUrl + "emp/departments", departments)
       
   }
-  updateDepartment(departments: Department) {
+  updateDepartment(departments: Department):Observable<Department> {
     return this._http.put<Department>(this._baseUrl + 'emp/departments', departments)
       
 
   }
-  deleteDepartment(id: number) {
+  deleteDepartment(id: number):Observable<number> {
     return this._http.delete<number>(this._baseUrl + 'emp/departments/' + id)
      
 

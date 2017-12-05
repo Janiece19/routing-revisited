@@ -1,22 +1,27 @@
 import { Observable } from "rxjs/Observable";
 import { Department } from "./shared/form-model";
+import 'rxjs/add/observable/of';
 
 export class MockHelper {
        getDepartment() {
-    return Observable.of([{id:1,name:'Hr'}, {id:2,name:'Sales'},{id:3,name:'Marketing'}])
+    return Observable.of(this.Departments);
       
   }
    saveDepartment(departments: Department) {
-    return Observable.of([{id:1,name:'Hr'}, {id:2,name:'Sales'},{id:3,name:'Marketing'}])
+     this.Departments.push(departments);
+    return Observable.of(this.Departments);
       
   }
    updateDepartment(departments: Department) {
-    return Observable.of([{id:1,name:'Hr'}, {id:2,name:'Sales'},{id:3,name:'Marketing'}])
+    return Observable.of(this.Departments);
       
 
   }
    deleteDepartment(id: number) {
-    return Observable.of([{id:1,name:'Hr'}, {id:2,name:'Sales'},{id:3,name:'Marketing'}])
+      let result=(this. Departments.filter((item) => item.id != id));
+      this.Departments=result;
+
+     return Observable.of(this.Departments);
      
 
   }
@@ -24,4 +29,12 @@ export class MockHelper {
     return Observable.of({id:2,name:'Sales'});
 
   }
+
+
+  Departments=[
+  {id:1,name:'Hr'},
+  {id:2,name:'Finance'},
+  {id:3,name:'sales'},
+  {id:4,name:'Marketing'},
+  ]
 }
