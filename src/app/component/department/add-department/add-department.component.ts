@@ -25,9 +25,18 @@ get(){
    return this.title;
  }
  
-  constructor(private _formService: FormService,private router:Router) { }
+  constructor(private _formService: FormService,private router:Router) {
+  //  this.department.name="";
+  //  this.department.id=0;
+    
+  }
 
   AddDepartment() {
+    if(this.department.name=='undefined'||this.department.name==''||this.department.name=='null'||this.department.name==undefined||typeof(this.department.name!='string'))
+  throw new Error('Invalid input');
+  try{
+
+  
     let empObj = new Department;
      empObj.id = this.department.id;
     empObj.name = this.department.name;
@@ -38,6 +47,12 @@ get(){
       },
       (error) => console.error(error)
     );
+  }
+  catch(error)
+  {
+  console.error(error);
+
+  }
   }
  
   ngOnInit() {

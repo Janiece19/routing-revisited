@@ -104,7 +104,8 @@ fdescribe('DepartmentComponent', () => {
   fit('should have mockdata when daleteDepartment with repective id is called',()=>{
    
     component.deleteRow(3);
-  expect(component.departments.length).toBe(3);
+   expect(component.departments.length).toBe(3);
+  //  expect(mockHelper.Departments.length).toBe(3);
   expect(component.departments).toEqual([
     {id:1,name:'Hr'},
     {id:2,name:'Finance'},

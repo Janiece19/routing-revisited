@@ -29,7 +29,10 @@ export class EditDeptComponent implements OnInit {
 
 
 updateDepartment() {
-    // empObj.name = this.department.name;
+  if(this.department.name=='undefined'||this.department.name==''||this.department.name=='null'||this.department.name==undefined||typeof(this.department.name!='string'))
+  throw new Error('Invalid input');
+   
+try{
     this.formService.updateDepartment(this.department).subscribe(
       (data) => {
          this.router.navigate(['/home']);
@@ -38,6 +41,11 @@ updateDepartment() {
       (error) => console.error(error)
     );
   }
+
+catch(error){
+console.error(error);
+}
+}
   
 
    cancelForm() {

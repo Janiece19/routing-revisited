@@ -18,8 +18,8 @@ export class MockHelper {
 
   }
    deleteDepartment(id: number) {
-      let result=(this. Departments.filter((item) => item.id != id));
-      this.Departments=result;
+      this.Departments=(this. Departments.filter((item) => item.id != id));
+      
 
      return Observable.of(this.Departments);
      

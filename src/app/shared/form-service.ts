@@ -3,7 +3,7 @@ import { Department } from '../shared/form-model'
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
-import { Promise } from 'q';
+// import { Promise } from 'q';
 
 @Injectable()
 export class FormService {
