@@ -40,7 +40,7 @@ import {FormsModule} from '@angular/forms';
   });
 
 
-  it('navigate to "" redirects you to /home', fakeAsync(() => { 
+  fit('navigate to "" redirects you to /home', fakeAsync(() => { 
   router.navigate(['']);
   tick(50);
   expect(location.path()).toBe('/home'); 

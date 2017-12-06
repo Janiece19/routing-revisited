@@ -86,7 +86,7 @@ fdescribe('DepartmentComponent', () => {
     })
   })
 
-  fit('should call daleteDepartment with repective id',()=>{
+  it('should call daleteDepartment with repective id',()=>{
     spyOn(formService,'deleteDepartment').and.returnValue(Observable.of(mockHelper.deleteDepartment(3)));
     spyOn(component,'loadDepartments');
     component.deleteRow(3);
@@ -95,7 +95,7 @@ fdescribe('DepartmentComponent', () => {
     expect(formService.deleteDepartment).toHaveBeenCalledTimes(1);
     expect(formService.deleteDepartment).toHaveBeenCalledWith(3);
     expect(component.loadDepartments).toHaveBeenCalledTimes(1);
-
+    
     
     
   
@@ -105,6 +105,11 @@ fdescribe('DepartmentComponent', () => {
    
     component.deleteRow(3);
   expect(component.departments.length).toBe(3);
+  expect(component.departments).toEqual([
+    {id:1,name:'Hr'},
+    {id:2,name:'Finance'},
+    {id:4,name:'Marketing'},
+    ])
 
   
      
