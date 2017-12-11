@@ -157,6 +157,14 @@ it('should render title in a h1 tag', async(() => {
     expect(router.navigate).toHaveBeenCalledWith(['/view-detail', { id: 1, name: 'finance', description: 'finance' + 'division' }]);
   });
 
+   fit('should throw error when router is undefined',()=>{
+    spyOn(console,'error');
+    (<any>component).router=undefined;
+    component.showAddForm();
+    expect(console.error).toHaveBeenCalledWith(new TypeError("Cannot read property 'navigate' of undefined"));
+    
+   })
+
 
 
   

@@ -20,16 +20,21 @@ export class EditDeptComponent implements OnInit {
   constructor(private route:ActivatedRoute,private formService:FormService,private router:Router) { }
 
   ngOnInit() {
-   
+   try{
     this.route.params.switchMap((param:Params)=>
       this.formService.getDeptment(+param['id'])).subscribe(data=>this.department=data);
+   }
+   catch(error)
+   {
+     console.error(error);
+   }
 // this.department.id=+this.route.snapshot.params['id'];
 // this.department.name=this.route.snapshot.params['name'];
           }  
 
 
 updateDepartment() {
-  if(this.department.name=='undefined'||this.department.name==''||this.department.name=='null'||this.department.name==undefined||typeof(this.department.name!='string'))
+  if(this.department.name=='undefined'||this.department.name==''||this.department.name=='null'||this.department.name==undefined||this.department.name==null)
   throw new Error('Invalid input');
    
 try{
@@ -49,7 +54,13 @@ console.error(error);
   
 
    cancelForm() {
+     try{
   this.router.navigate(['/home']);
+
+     }
+     catch(error){
+       console.error(error);
+     }
   }
 
 }

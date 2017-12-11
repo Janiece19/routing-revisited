@@ -5,7 +5,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
 import { FormService } from '../shared/form-service';
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
+import { MockHelper } from "../stub";
+import { Observable } from "rxjs/Observable";
 
 class empServiceMock{
   getDepartment<T>(){
@@ -18,15 +20,20 @@ describe('DepartmentDetailComponent', () => {
   let fixture: ComponentFixture<DepartmentDetailComponent>;
  let router: Router;
   let formService:FormService;
+   let activatedRoute: ActivatedRoute;
+   let mockHelper:MockHelper;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DepartmentDetailComponent ],
-      imports:[FormsModule,HttpClientModule,RouterTestingModule.withRoutes([])],
-      providers:[{provide:FormService,useClass:empServiceMock}]
+      imports:[FormsModule,HttpClientModule,RouterTestingModule.withRoutes([])],//RouterTestingModule is not reqd
+      providers:[{provide:FormService,useClass:MockHelper},
+      { provide: ActivatedRoute, useValue: { params: Observable.of({ id: undefined,name:'Hr',description:'Hr'+'division' }) } }]
     })
     .compileComponents();
      router = TestBed.get(Router); 
      formService=TestBed.get(FormService);
+     activatedRoute = TestBed.get(ActivatedRoute);
+    mockHelper = new MockHelper();
   }));
 
   beforeEach(() => {
@@ -42,7 +49,33 @@ describe('DepartmentDetailComponent', () => {
     let navigateSpy=spyOn((<any>component).router,'navigate');
   })
 
-  it('should get data from the service',()=>{
+  it('should call getdeptment with url id on calling ngOnInit',()=>{
+  // spyOn(<any>formService,'getDeptment').and.returnValue(Promise.resolve({id:1,name:'Hr'}));
+  component.ngOnInit();
+  expect(component.department.id).toEqual(4);
+  expect(component.department.name).toEqual('Hr');
+  expect(component.selectedDescrption).toEqual('Hr'+'division');
+});
+
+
+it('should throw error when activatedroute is undefined',()=>{
+    spyOn(console,'error');
+    (<any>component).route=undefined;
+    component.ngOnInit();
+    expect(console.error).toHaveBeenCalledWith(new TypeError("Cannot read property 'params' of undefined"));
     
-  })
+   })
+fit('should throw error when params are undefined',()=>{
+  spyOn(console,'error')
+  component.ngOnInit();
+  expect(console.error).toHaveBeenCalledWith(new TypeError('Invalid parameters'));
+
+})
+fit('shoud call method inside goBack()',()=>{
+  spyOn((<any>component).location,'back');
+  component.goBack();
+   expect((<any>component).location.back).toHaveBeenCalled();
+})
+
+    
 });

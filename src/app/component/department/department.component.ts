@@ -22,6 +22,8 @@ export class DepartmentComponent implements OnInit {
 
 
   deleteRow(id: number) {
+    if(id==undefined)
+    throw new Error('Invalid input')
     this._formService.deleteDepartment(id).subscribe(
       (data) => {
 
@@ -34,7 +36,14 @@ export class DepartmentComponent implements OnInit {
 
   }
   showAddForm() {
+    try{
+
     this.router.navigate(['/add'])
+  }
+  catch(error)
+  {
+    console.error(error);
+  }
   }
 
 

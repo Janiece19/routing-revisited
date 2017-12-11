@@ -16,18 +16,19 @@ describe('EditDeptComponent', () => {
   let formService: FormService;
   let mockHelper: MockHelper;
   let activatedRoute: ActivatedRoute
-  let updatebutton
-  let clearbutton
+  let updatebutton;
+  let clearbutton;
   let mockRouter = {
     navigate: jasmine.createSpy('navigate')
   }
+  let editComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EditDeptComponent],
-      providers: [{ provide: Router, useValue: mockRouter },
+      providers: [EditDeptComponent,{ provide: Router, useValue: mockRouter },
       { provide: FormService, useClass: MockHelper },
-      { provide: ActivatedRoute, useValue: { params: Observable.of({ id: 1,name:'Hr' }) } }],
+      { provide: ActivatedRoute, useValue: { params: Observable.of({ id: 4,name:'Hr' }) } }],
       imports: [FormsModule]
     })
       .compileComponents();
@@ -35,6 +36,7 @@ describe('EditDeptComponent', () => {
     formService = TestBed.get(FormService);
     activatedRoute = TestBed.get(ActivatedRoute);
     mockHelper = new MockHelper();
+    editComponent=TestBed.get(EditDeptComponent);
     // updatebutton = fixture.debugElement.query(By.css('input[name="updatetbtn"]'));
     // clearbutton = fixture.debugElement.query(By.css('input[name="clearbtn"]'));
 
@@ -93,10 +95,10 @@ describe('EditDeptComponent', () => {
     expect(component.department.name.trim()).toEqual('finance')
   });
 
-   fit('should call updateDepartment method when triggering update button ', () => {
-    // spyOn(formService,'updateDepartment').and.returnValue(Observable.of([{ id: 8, name: 'Finance' }]))
+   it('should call updateDepartment method when triggering update button ', () => {
+     spyOn(formService,'updateDepartment').and.returnValue(Observable.of([{ id: 8, name: 'Finance' }]))
    
-   spyOn(console,'error');
+  //  spyOn(console,'error');
     let dptName = fixture.debugElement.query(By.css('input[name="DeptName"]'));
     updatebutton = fixture.debugElement.query(By.css('input[name="updatetbtn"]'));
 
@@ -108,13 +110,13 @@ describe('EditDeptComponent', () => {
 
     fixture.detectChanges();
     updatebutton.triggerEventHandler('click',null);
+    fixture.detectChanges();
 
-  //  expect(formService.updateDepartment).toHaveBeenCalledTimes(0);
-    // expect(formService.updateDepartment).toHaveBeenCalledWith();
-    //  expect(dptName.nativeElement.value ).toBe('finance');
-    // expect(router.navigate).toHaveBeenCalledWith(['/home']);
-     expect(component.department.name.trim()).toEqual('undefined')
-     expect(console.error).toHaveBeenCalledWith();
+     expect(()=>component.updateDepartment()).toThrowError('Invalid input');
+    expect(formService.updateDepartment).toHaveBeenCalledTimes(0);
+     expect(router.navigate).not.toHaveBeenCalledWith(['/home']);
+     expect(component.department.name.trim()).toEqual('')
+    //  expect(console.error).toHaveBeenCalledWith();
   });
 
 
@@ -125,12 +127,71 @@ describe('EditDeptComponent', () => {
   })
 
 
-fit('should navigate to home on clicking cancel', () => {
+it('should navigate to home on clicking cancel', () => {
   
   clearbutton = fixture.debugElement.query(By.css('input[name="clearbtn"]'));
   clearbutton.triggerEventHandler('click',null);
     expect(router.navigate).toHaveBeenCalledWith(['/home']);
   })
+
+
+  fit('should call getdeptment with url id on calling ngOnInit',()=>{
+  spyOn(formService,'getDeptment').and.returnValue(Promise.resolve({id:4,name:'Hr'}));;
+  component.ngOnInit();
+  expect(formService.getDeptment).toHaveBeenCalledWith(4);
+  expect(formService.getDeptment).toHaveBeenCalledTimes(1);
+})
+
+it('should call getdeptment with url id on calling ngOnInit',()=>{
+  // spyOn(<any>formService,'getDeptment').and.returnValue(Promise.resolve({id:1,name:'Hr'}));
+  component.ngOnInit();
+  expect(component.department).toEqual({id:2,name:'Sales'});
+  
+})
+it('should throw error when findAndUpdate fails', () => {
+    spyOn(formService, 'updateDepartment').and.throwError(' Update Rejected');
+
+    spyOn(console, 'error');
+
+    //let oldObject = JSON.parse(JSON.stringify(MockArrayHelper.student));
+   
+     component.updateDepartment( );
+    
+    expect(console.error).toHaveBeenCalledWith(new Error(' Update Rejected'));
+  })
+
+
+  it('should throw error when router is undefined',()=>{
+    spyOn(console,'error');
+    (<any>component).router=undefined;
+    component.cancelForm();
+    expect(console.error).toHaveBeenCalledWith(new TypeError("Cannot read property 'navigate' of undefined"));
+    
+   })
+
+
+it('should throw error when activatedroute is undefined',()=>{
+    spyOn(console,'error');
+    (<any>component).route=undefined;
+    component.ngOnInit();
+    expect(console.error).toHaveBeenCalledWith(new TypeError("Cannot read property 'params' of undefined"));
+    
+   })
+
+
+   fit('should throw error when formService is undefined',()=>{
+     spyOn(console,'error');
+      (<any>component).formService=undefined;
+      component.updateDepartment();
+      expect(console.error).toHaveBeenCalledWith(new TypeError("Cannot read property 'updateDepartment' of undefined"));
+
+   })
+
+
+   
+
+
+ 
 
 
 

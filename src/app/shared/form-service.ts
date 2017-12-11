@@ -15,7 +15,7 @@ export class FormService {
     return this._http.get<Department[]>(this._baseUrl + "emp/departments")
       
   }
-  saveDepartment(departments: Department):Observable<Department> {
+  saveDepartment<T>(departments: Department):Observable<Department> {
     return this._http.post<Department>(this._baseUrl + "emp/departments", departments)
       
   }

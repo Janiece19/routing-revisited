@@ -18,6 +18,7 @@ describe('AddDepartmentComponent', () => {
   let router: Router;
   let formService: FormService;
   let mockHelper: MockHelper;
+  let savebutton;
   let mockRouter = {
     navigate: jasmine.createSpy('navigate')
   }
@@ -45,9 +46,9 @@ describe('AddDepartmentComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  fit('should navigate to home on clicking save()', () => {
+  it('should navigate to home on clicking save()', () => {
     spyOn(formService, 'saveDepartment').and.returnValue(Observable.of([{ id: 8, name: 'Finance' }]));
-    component.department.id = 6;
+    component.department.id = 0;
     component.department.name = 'Hr'
 
 
@@ -67,10 +68,11 @@ describe('AddDepartmentComponent', () => {
 
   })
 
-  fit('should navigate to home on clicking save()', () => {
+  it('should navigate to home on clicking save()', () => {
     spyOn(formService, 'saveDepartment').and.returnValue((mockHelper.saveDepartment({ id: 5, name: 'Finance' })));
 
-
+ component.department.id=0;
+ component.department.name='other';
 
 
     component.AddDepartment();
@@ -88,7 +90,7 @@ describe('AddDepartmentComponent', () => {
   it('should add a new record on clicking save()', () => {
     let oldObj = mockHelper.Departments;
 
-    component.department.id = 5;
+    component.department.id = 0;
     component.department.name = 'Finance';
 
 
@@ -105,5 +107,79 @@ describe('AddDepartmentComponent', () => {
     component.cancelForm();
     expect(router.navigate).toHaveBeenCalledWith(['/home']);
   })
+ 
+
+
+
+  it('should throw error when valid input is not passed when triggering save button ', () => {
+    spyOn(formService,'saveDepartment').and.returnValue(Observable.of([{ id: 8, name: 'Finance' }]))
+  // spyOn(console,'error');
+  
+   let dptName = fixture.debugElement.query(By.css('input[name="DeptName"]'));
+   savebutton = fixture.debugElement.query(By.css('input[name="savebtn"]'));
+
+  
+   fixture.detectChanges();
+   dptName.nativeElement.value = null;
+
+    dptName.nativeElement.dispatchEvent(new Event('input'));
+
+   fixture.detectChanges();
+   savebutton.triggerEventHandler('click',null);
+   fixture.detectChanges();
+
+    expect(()=>component.AddDepartment()).toThrowError('Invalid input');
+    expect(formService.saveDepartment).toHaveBeenCalledTimes(0);
+   
+    expect(router.navigate).not.toHaveBeenCalledWith(['/home']);
+    expect(component.department.name.trim()).toEqual('')
+    // expect(console.error).toHaveBeenCalledWith();
+ 
+  });
+
+  it('should throw error when valid input is not passed when triggering save button ', () => {
+    spyOn(formService,'saveDepartment')
+  // spyOn(console,'error');
+  
+   let dptName = fixture.debugElement.query(By.css('input[name="DeptName"]'));
+   savebutton = fixture.debugElement.query(By.css('input[name="savebtn"]'));
+
+  
+   fixture.detectChanges();
+   dptName.nativeElement.value = undefined;
+
+    dptName.nativeElement.dispatchEvent(new Event('input'));
+
+   fixture.detectChanges();
+   savebutton.triggerEventHandler('click',null);
+   fixture.detectChanges();
+
+    expect(()=>component.AddDepartment()).toThrowError('Invalid input');
+    expect(formService.saveDepartment).toHaveBeenCalledTimes(0);
+   
+    expect(router.navigate).not.toHaveBeenCalledWith(['/home']);
+    expect(component.department.name.trim()).toEqual('undefined')
+    // expect(console.error).toHaveBeenCalledWith();
+ 
+  });
+
+  fit('should throw error when saveDepartment fails', () => {
+    spyOn(formService, 'saveDepartment').and.throwError(' Update Rejected');
+
+    spyOn(console, 'error');
+    component.department.id = 0;
+    component.department.name = 'Finance';
+
+    //let oldObject = JSON.parse(JSON.stringify(MockArrayHelper.student));
+   
+     component.AddDepartment( );
+    
+    expect(console.error).toHaveBeenCalledWith(new Error(' Update Rejected'));
+  })
+
+
+
+ 
 });
+
 

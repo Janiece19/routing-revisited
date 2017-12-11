@@ -15,12 +15,22 @@ export class DepartmentDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router,private location:Location) { }
 
   ngOnInit() {
+  
+    try{
     this.route.params.subscribe((param: Params) => {
+      if(param['id']==undefined||param['id']==null||param['name']==undefined||param['name']==null||param['description']==undefined||param['description']==null)
+      throw new Error('Invalid parameters');
       this.department.id = parseInt(param['id']);
       this.department.name = (param['name']);
 this.selectedDescrption=param['description'];
-
     })
+    }
+    
+    catch(error)
+    {
+      console.error(error);
+    }
+  
 
   }
   goBack(){
