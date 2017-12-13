@@ -2,7 +2,7 @@
     Add Department
 </h1>
 <label for="DeptName"> Department Name</label>
-<input type="text" name="DeptName" [(ngModel)]="department.name">
+<!--<input type="text" name="DeptName" [(ngModel)]="department.name">///Without validation
 <br>
 <br>
 <input type="button" name="savebtn" value="Save Department" (click)="AddDepartment()">
@@ -10,4 +10,21 @@
 <br>
 
 <br>
-<input type="button" name="cancelbtn" value="Cancel" (click)="cancelForm()">
+<input type="button" name="cancelbtn" value="Cancel" (click)="cancelForm()">-->
+
+<form #form="ngForm" (ngSubmit)="AddDepartment()">
+    <input class="form-control" name="deptName" type="text" pattern="^[A-Za-z\s]+$" placeholder="Enter DepartmentName" [(ngModel)]="department.name"
+        #deptName="ngModel" required>
+    <div *ngIf="deptName.invalid">
+        <div name="required" *ngIf="deptName.errors.required">
+            deptName is required
+        </div>
+        <div name="pattern" *ngIf="deptName.errors.pattern">
+            only Characters allowed!
+        </div>
+
+    </div>
+    <button name="form1" type="submit" [disabled]="!form.valid">Save Department</button>
+    <input type="button" name="clearbtn" value="Cancel" (click)="cancelForm()">
+</form>
+

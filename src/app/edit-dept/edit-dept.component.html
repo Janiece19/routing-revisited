@@ -2,7 +2,24 @@
     Edit Department
 </h1>
 <label for="DeptName"> Department Name</label>
-<input type="text" name="DeptName" [(ngModel)]="department.name">
+
+<form #form="ngForm" (ngSubmit)="updateDepartment()">
+    <input class="form-control" name="deptName" type="text" pattern="^[A-Za-z\s]+$" placeholder="Enter DepartmentName" [(ngModel)]="department.name"
+        #deptName="ngModel" required>
+    <div *ngIf="deptName.invalid">
+        <div *ngIf="deptName.errors.required">
+            deptName is required
+        </div>
+        <div *ngIf="deptName.errors.pattern">
+            only Characters allowed!
+        </div>
+
+    </div>
+    <button name="updatetbtn" type="submit" [disabled]="!form.valid">Update Department</button>
+    <input type="button" name="clearbtn" value="Cancel" (click)="cancelForm()">
+</form>
+
+<!--<input type="text" name="DeptName" [(ngModel)]="department.name">
 <br>
 <br>
 
@@ -10,5 +27,5 @@
 <input type="button" name="updatetbtn" value="update Department" (click)="updateDepartment()">
 <br>
 <br>
-<input type="button" name="clearbtn" value="Cancel" (click)="cancelForm()">
+<input type="button" name="clearbtn" value="Cancel" (click)="cancelForm()">-->
 
