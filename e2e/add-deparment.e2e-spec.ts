@@ -16,7 +16,7 @@ describe('angular-crud1 App', () => {
     expect(page.getSaveButton()).toBeTruthy();
   });
 
-  fit("should be able to add a new department", () => {  
+  it("should be able to add a new department", () => {  
     browser.get("/add");
     let department = element(
           by.css(" input[name='deptName']"));

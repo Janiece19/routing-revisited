@@ -13,8 +13,8 @@
     <tr *ngFor="let dept of departments">
       <td>{{dept.name}}</td>
       <td>
-        <input type="button" value="Delete" (click)="deleteRow(dept.id)">
-        <input type="button" value="Edit" (click)="editRow(dept)">
+        <input type="button" name="delete" value="Delete" (click)="deleteRow(dept.id)">
+        <input type="button" name="edit" value="Edit" (click)="editRow(dept)">
         <button (click)="viewDetail(dept)">View Detail</button>
       </td>
     </tr>
