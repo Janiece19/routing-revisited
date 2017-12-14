@@ -134,13 +134,14 @@ it('should delete the correct data', () => {
     
   })));
 
-  fit('should throw error an Observable<User[]>', 
-   ()  => {
+  fit('should throw error an Observable<User[]>', async(inject([HttpClient, HttpTestingController],
+    (http: HttpClient, backend: HttpTestingController) => { 
+   
 
-   (<any>formService).http.get(`http://localhost:3500/emp45/departments`).subscribe();
+   (<any>formService)._http.get(`http://localhost:3500/emp45/departments`).subscribe();
   httpMock.expectNone(`http://loalhost:4000/emp45/departments`);
       
-  });
+  })));
 
        
     

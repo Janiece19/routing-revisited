@@ -20,16 +20,30 @@ describe('angular-crud1 App', () => {
 
   it('should display count of table rows', () => {
     browser.get("/home");
-    let table=element(by.css('table'))
+    let table = element(by.css('table'))
     let tableElements = element.all(by.css("tr"));
-     let tableHeaders = element.all(by.css("th")).getText();
+    let tableHeaders = element.all(by.css("th")).getText();
+
     expect(tableElements.count()).toEqual(4);
     expect(table).toBeDefined();
 
-     expect(tableHeaders).toEqual([ 'Name', 'Action' ]);
- });
+    expect(tableHeaders).toEqual(['Name', 'Action']);
+  });
 
- 
+
+  it("should be able to delete a department", () => {
+    browser.get("/home");
+    let getDept = page.getDeleteButton().get(2);
+
+    getDept.click();
+
+
+    let deptList = element.all(by.css("tr"));
+
+    expect(deptList.count()).toEqual(3);
+  })
+
+
 
 
 

@@ -20,23 +20,26 @@ export class AppPage {
     return element(by.css('h1')).getText();
   }
 
-
-
-   getButton() {
+  getButton() {
     return element(by.css('app-department input[name="add"]')).isPresent();
   }
 
 
- getCancelButton() {
+  getCancelButton() {
     return element(by.css("app-add-department input[type=button]"));
   }
 
-  getTable(){
+  getTable() {
     return element(by.css('app-department table'))
   }
 
- getSaveButton() {
-    return element(by.cssContainingText('button','Save Department'));
+  getSaveButton() {
+    return element(by.cssContainingText('button', 'Save Department'));
   }
-  
+
+
+  getDeleteButton() {
+    return element.all(by.css('input[name="delete"]'));
+  }
+
 }

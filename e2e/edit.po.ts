@@ -10,16 +10,20 @@ export class EditPage {
         return element(by.css('h1')).getText();
       }
 
-      getSaveButton() {
+      getUpdateButton() {
         return element(by.cssContainingText('button','Update Department'));
       }
 
       getCancelButton() {
-        return element(by.css("app-edit-dept input[type=button]"));
+        return element(by.css("app-edit-dept input[name='clearbtn']"));
       }
 
       getEditButton(){
-          return element.all(by.css('app-edit-dept input[name="edit"]'));
+          return element.all(by.css('input[name="edit"]'));
+      }
+
+      getEditTextBox(){
+        return element(by.css("app-edit-dept input[type=text]"))
       }
     
 }

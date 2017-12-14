@@ -7,10 +7,10 @@
     <input class="form-control" name="deptName" type="text" pattern="^[A-Za-z\s]+$" placeholder="Enter DepartmentName" [(ngModel)]="department.name"
         #deptName="ngModel" required>
     <div *ngIf="deptName.invalid">
-        <div *ngIf="deptName.errors.required">
+        <div name="required" *ngIf="deptName.errors.required">
             deptName is required
         </div>
-        <div *ngIf="deptName.errors.pattern">
+        <div name="pattern" *ngIf="deptName.errors.pattern">
             only Characters allowed!
         </div>
 

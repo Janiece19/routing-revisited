@@ -40,17 +40,43 @@ import {FormsModule} from '@angular/forms';
   });
 
 
-  it('navigate to "" redirects you to /home', fakeAsync(() => { 
-  router.navigate(['']);
-  tick(50);
+it('navigate to "" redirects you to /home', ()=> { 
+  router.navigate(['']).then(()=>{
+ 
   expect(location.path()).toBe('/home'); 
+  });
+
+});
+
+it('navigate to "home" takes you to /home', ()=> {
+    router.navigate(['/home']).then(()=>{
+    
+    expect(location.path()).toBe('/home');
+    });
+  });
 
 
-}));
+  it('navigate to "add" takes you to /add', ()=> {
+    router.navigate(['/add']).then(()=>{
+    
+    expect(location.path()).toBe('/add');
+    });
+  });
 
-it('navigate to "search" takes you to /search', fakeAsync(() => {
-    router.navigate(['/home']);
-    tick(50);
-    expect(location.path()).toBe('/search');
-  }));
+
+
+ it('navigate to "view-detail" takes you to /view-detail', ()=> {
+    router.navigate(['/view-detail']).then(()=>{
+    
+    expect(location.path()).toBe('/view-detail');
+    });
+  });
+
+
+   fit('navigate to "edit/:id" takes you to /edit/id', ()=> {
+    router.navigate(['/edit/2']).then(()=>{
+    
+    expect(location.path()).toBe('/edit/2');
+    });
+  });
 }); 
